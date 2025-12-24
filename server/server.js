@@ -69,7 +69,6 @@ app.use(cors(getCorsOptions()));
 app.use(express.json());
 
 // Serve uploaded files with CORS headers
-// Configure Helmet to not apply CSP to static files by using a custom middleware
 app.use('/uploads', (req, res, next) => {
   // Set CORS headers for static files
   const corsOptions = getCorsOptions();
@@ -77,32 +76,6 @@ app.use('/uploads', (req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', corsOptions.origin === true ? req.headers.origin || '*' : corsOptions.origin);
     res.setHeader('Access-Control-Allow-Credentials', 'true');
   }
-  
-  // Intercept the response to set proper CSP headers after Helmet
-  const originalSetHeader = res.setHeader.bind(res);
-  res.setHeader = function(name, value) {
-    if (name.toLowerCase() === 'content-security-policy') {
-      // Override with our CSP that allows embedding
-      const cspHeader = [
-        "default-src 'self'",
-        `img-src 'self' data: blob: ${backendUrl || ''}`,
-        `connect-src 'self' ${frontendUrl || ''} ${backendUrl || ''}`,
-        "style-src 'self' 'unsafe-inline'",
-        "script-src 'self'",
-        "font-src 'self'",
-        `frame-src 'self' ${backendUrl || ''}`,
-        `object-src 'self' ${backendUrl || ''}`,
-        `frame-ancestors 'self' ${frontendUrl || ''}`
-      ].filter(Boolean).join('; ');
-      return originalSetHeader(name, cspHeader);
-    }
-    if (name.toLowerCase() === 'x-frame-options' && isDevelopment) {
-      // Don't set X-Frame-Options in development
-      return;
-    }
-    return originalSetHeader(name, value);
-  };
-  
   next();
 }, express.static(path.join(__dirname, 'uploads')));
 
