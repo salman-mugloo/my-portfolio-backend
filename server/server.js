@@ -65,11 +65,11 @@ app.use(
 );
 
 // CORS configuration - safe production-ready setup
-const allowedOrigin = process.env.FRONTEND_URL;
+const FRONTEND_URL = process.env.FRONTEND_URL?.trim();
 
 app.use(
   cors({
-    origin: allowedOrigin,
+    origin: FRONTEND_URL,
     credentials: true
   })
 );
@@ -80,8 +80,8 @@ app.use(express.json());
 // Serve uploaded files with CORS headers
 app.use('/uploads', (req, res, next) => {
   // Set CORS headers for static files
-  if (allowedOrigin) {
-    res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
+  if (FRONTEND_URL) {
+    res.setHeader('Access-Control-Allow-Origin', FRONTEND_URL);
     res.setHeader('Access-Control-Allow-Credentials', 'true');
   }
   next();
