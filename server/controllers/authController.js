@@ -36,6 +36,9 @@ const sendOTPEmail = async (email, otp) => {
     tls: {
       rejectUnauthorized: false,
     },
+    connectionTimeout: 20000,
+    greetingTimeout: 20000,
+    socketTimeout: 20000,
   });
 
   const mailOptions = {
@@ -328,6 +331,9 @@ export const forgotPassword = async (req, res) => {
       tls: {
         rejectUnauthorized: false,
       },
+      connectionTimeout: 20000,
+      greetingTimeout: 20000,
+      socketTimeout: 20000,
     });
 
     const mailOptions = {
