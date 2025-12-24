@@ -51,6 +51,9 @@ console.log('✅ Environment variables validated');
 
 const app = express();
 
+// Trust proxy for Railway (required for rate limiting behind proxy)
+app.set("trust proxy", 1);
+
 // Security headers with Helmet
 // CSP disabled temporarily to fix invalid header character crash
 app.use(
