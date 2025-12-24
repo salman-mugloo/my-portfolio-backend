@@ -1,0 +1,11 @@
+import express from 'express';
+import { getExpertise, getAllExpertise, createExpertise, updateExpertise, deleteExpertise } from '../controllers/expertiseController.js';
+import { protect } from '../middleware/auth.js';
+import { csrfProtect } from '../middleware/csrf.js';
+const router = express.Router();
+router.get('/', getExpertise);
+router.get('/admin', protect, getAllExpertise);
+router.post('/admin', protect, csrfProtect, createExpertise);
+router.put('/admin/:id', protect, csrfProtect, updateExpertise);
+router.delete('/admin/:id', protect, csrfProtect, deleteExpertise);
+export default router;

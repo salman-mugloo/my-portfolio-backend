@@ -1,0 +1,11 @@
+import express from 'express';
+import { getProjects, getAllProjects, createProject, updateProject, deleteProject } from '../controllers/projectController.js';
+import { protect } from '../middleware/auth.js';
+import { csrfProtect } from '../middleware/csrf.js';
+const router = express.Router();
+router.get('/', getProjects);
+router.get('/admin', protect, getAllProjects);
+router.post('/admin', protect, csrfProtect, createProject);
+router.put('/admin/:id', protect, csrfProtect, updateProject);
+router.delete('/admin/:id', protect, csrfProtect, deleteProject);
+export default router;

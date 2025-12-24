@@ -1,0 +1,70 @@
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { connectDB } from './config/database.js';
+import authRoutes from './routes/authRoutes.js';
+import projectRoutes from './routes/projectRoutes.js';
+import expertiseRoutes from './routes/expertiseRoutes.js';
+import skillRoutes from './routes/skillRoutes.js';
+import certificationRoutes from './routes/certificationRoutes.js';
+import resumeRoutes from './routes/resumeRoutes.js';
+import contactRoutes from './routes/contactRoutes.js';
+import profileRoutes from './routes/profileRoutes.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config();
+
+const app = express();
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Serve uploaded files
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Connect to database
+connectDB();
+
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/projects', projectRoutes);
+app.use('/api/expertise', expertiseRoutes);
+app.use('/api/skills', skillRoutes);
+app.use('/api/certifications', certificationRoutes);
+app.use('/api/resume', resumeRoutes);
+app.use('/api/contact', contactRoutes);
+app.use('/api/profile', profileRoutes);
+
+// Health check
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'OK', message: 'Portfolio API is running' });
+});
+
+// Root route
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'Portfolio API Server',
+    version: '1.0.0',
+    endpoints: {
+      health: '/api/health',
+      auth: '/api/auth',
+      projects: '/api/projects',
+      expertise: '/api/expertise',
+      skills: '/api/skills',
+      certifications: '/api/certifications',
+      resume: '/api/resume'
+    }
+  });
+});
+
+const PORT = process.env.PORT || 3002;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+

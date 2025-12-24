@@ -1,0 +1,11 @@
+import express from 'express';
+import { getSkills, getAllSkills, createSkill, updateSkill, deleteSkill } from '../controllers/skillController.js';
+import { protect } from '../middleware/auth.js';
+import { csrfProtect } from '../middleware/csrf.js';
+const router = express.Router();
+router.get('/', getSkills);
+router.get('/admin', protect, getAllSkills);
+router.post('/admin', protect, csrfProtect, createSkill);
+router.put('/admin/:id', protect, csrfProtect, updateSkill);
+router.delete('/admin/:id', protect, csrfProtect, deleteSkill);
+export default router;
