@@ -216,11 +216,7 @@ const PORT = process.env.PORT || 7002;
 // Start server after database connection
 connectDB().then(() => {
   app.listen(PORT, () => {
-    console.log('🚀 Server started successfully');
-    console.log(`   Port: ${PORT}`);
-    console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`   API Base: http://localhost:${PORT}/api`);
-    console.log(`   Health Check: http://localhost:${PORT}/api/health`);
+    console.log(`Server running on port ${PORT}`);
   });
 }).catch((error) => {
   console.error('❌ Failed to start server:', error.message);
