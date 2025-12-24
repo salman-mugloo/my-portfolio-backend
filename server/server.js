@@ -3,7 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import { connectDB } from './config/database.js';
-import { getCorsOptions, isDevelopment } from './config/environment.js';
+import { isDevelopment } from './config/environment.js';
 import authRoutes from './routes/authRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import projectRoutes from './routes/projectRoutes.js';
@@ -64,16 +64,24 @@ app.use(
   })
 );
 
+// CORS configuration - safe production-ready setup
+const allowedOrigin = process.env.FRONTEND_URL;
+
+app.use(
+  cors({
+    origin: allowedOrigin,
+    credentials: true
+  })
+);
+
 // Middleware
-app.use(cors(getCorsOptions()));
 app.use(express.json());
 
 // Serve uploaded files with CORS headers
 app.use('/uploads', (req, res, next) => {
   // Set CORS headers for static files
-  const corsOptions = getCorsOptions();
-  if (corsOptions.origin === true || (typeof corsOptions.origin === 'string' && corsOptions.origin)) {
-    res.setHeader('Access-Control-Allow-Origin', corsOptions.origin === true ? req.headers.origin || '*' : corsOptions.origin);
+  if (allowedOrigin) {
+    res.setHeader('Access-Control-Allow-Origin', allowedOrigin);
     res.setHeader('Access-Control-Allow-Credentials', 'true');
   }
   next();
