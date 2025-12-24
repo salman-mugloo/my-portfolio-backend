@@ -52,47 +52,17 @@ console.log('✅ Environment variables validated');
 const app = express();
 
 // Security headers with Helmet
-const frontendUrl = process.env.FRONTEND_URL || (isDevelopment ? 'http://localhost:7000' : '');
-const backendUrl = isDevelopment ? 'http://localhost:7002' : (process.env.BACKEND_URL || '');
-
-const cspDirectives = {
-  defaultSrc: ["'self'"],
-  imgSrc: ["'self'", 'data:', 'blob:', ...(backendUrl ? [backendUrl] : [])],
-  connectSrc: ["'self'", ...(frontendUrl ? [frontendUrl] : []), ...(backendUrl ? [backendUrl] : [])],
-  styleSrc: ["'self'", "'unsafe-inline'"],
-  scriptSrc: ["'self'"],
-  fontSrc: ["'self'"],
-  frameSrc: ["'self'", ...(backendUrl ? [backendUrl] : [])], // Allow iframes from backend for PDF previews
-  objectSrc: ["'self'", ...(backendUrl ? [backendUrl] : [])], // Allow PDFs from backend
-  frameAncestors: frontendUrl ? ["'self'", frontendUrl] : ["'self'"], // Allow frontend to embed backend content
-};
-
-// Only add upgradeInsecureRequests in production
-if (!isDevelopment) {
-  cspDirectives.upgradeInsecureRequests = [];
-}
-
-// Configure Helmet
-const helmetConfig = {
-  contentSecurityPolicy: {
-    directives: cspDirectives,
-  },
-  xContentTypeOptions: true,
-  referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
-  hidePoweredBy: true,
-  crossOriginResourcePolicy: isDevelopment ? { policy: 'cross-origin' } : { policy: 'same-origin' },
-};
-
-// In development, disable X-Frame-Options to allow CSP frame-ancestors to work
-// X-Frame-Options: SAMEORIGIN blocks cross-origin iframes (localhost:7000 can't embed localhost:7002)
-// In production, use DENY for maximum security
-if (isDevelopment) {
-  helmetConfig.xFrameOptions = false; // Disable X-Frame-Options in dev, rely on CSP frame-ancestors
-} else {
-  helmetConfig.xFrameOptions = { action: 'deny' };
-}
-
-app.use(helmet(helmetConfig));
+// CSP disabled temporarily to fix invalid header character crash
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    xContentTypeOptions: true,
+    referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+    hidePoweredBy: true,
+    crossOriginResourcePolicy: isDevelopment ? { policy: 'cross-origin' } : { policy: 'same-origin' },
+    xFrameOptions: isDevelopment ? false : { action: 'deny' }
+  })
+);
 
 // Middleware
 app.use(cors(getCorsOptions()));
