@@ -36,7 +36,7 @@ const sendOTPEmail = async (email, otp) => {
   });
 
   const mailOptions = {
-    from: process.env.EMAIL_USER,
+    from: process.env.EMAIL_FROM,
     to: email,
     subject: 'Login OTP - Portfolio Admin',
     html: `
@@ -325,7 +325,7 @@ export const forgotPassword = async (req, res) => {
     });
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: process.env.EMAIL_FROM,
       to: admin.username, // username is the email
       subject: 'Password Reset Request - Portfolio Admin',
       html: `

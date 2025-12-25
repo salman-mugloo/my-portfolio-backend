@@ -60,7 +60,7 @@ export const sendContactMessage = async (req, res) => {
 
     // Email content
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: process.env.EMAIL_FROM,
       to: 'mugloosalman@gmail.com',
       subject: `Portfolio Contact: Message from ${name}`,
       html: `
