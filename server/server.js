@@ -56,6 +56,7 @@ app.set("trust proxy", 1);
 
 // Security headers with Helmet
 // CSP disabled temporarily to fix invalid header character crash
+// frameguard disabled to allow cross-origin iframe embedding (Vercel frontend + Railway backend)
 app.use(
   helmet({
     contentSecurityPolicy: false,
@@ -63,7 +64,7 @@ app.use(
     referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
     hidePoweredBy: true,
     crossOriginResourcePolicy: { policy: 'cross-origin' }, // Allow cross-origin for images/PDFs
-    frameguard: { action: 'sameorigin' } // Allow same-origin iframe embedding for PDF previews
+    frameguard: false // Disable X-Frame-Options to allow cross-origin iframe embedding
   })
 );
 
