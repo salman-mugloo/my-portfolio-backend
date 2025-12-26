@@ -81,15 +81,20 @@ app.use(
 // Middleware
 app.use(express.json());
 
-// Serve uploaded files with CORS headers
-app.use('/uploads', (req, res, next) => {
-  // Set CORS headers for static files
+// Set CORS headers for static file requests
+app.use("/uploads", (req, res, next) => {
   if (FRONTEND_URL) {
-    res.setHeader('Access-Control-Allow-Origin', FRONTEND_URL);
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader("Access-Control-Allow-Origin", FRONTEND_URL);
+    res.setHeader("Access-Control-Allow-Credentials", "true");
   }
   next();
-}, express.static(path.join(__dirname, 'uploads')));
+});
+
+// Serve uploaded files (images + PDFs) from server/uploads/ directory
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "uploads"))
+);
 
 // Database connection is handled in server startup (see app.listen below)
 
