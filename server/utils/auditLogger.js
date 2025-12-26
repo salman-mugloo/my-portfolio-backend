@@ -55,7 +55,10 @@ export const logAdminActivity = async ({ adminId, action, metadata = {}, req = n
     'PROFILE_IMAGE_UPLOAD',
     'PROFILE_IMAGE_DELETE',
     'RESUME_UPLOAD',
-    'RESUME_DELETE'
+    'RESUME_DELETE',
+    'LANGUAGE_CREATE',
+    'LANGUAGE_UPDATE',
+    'LANGUAGE_DELETE'
   ];
 
   if (!validActions.includes(action)) {
@@ -133,6 +136,18 @@ export const auditLogger = {
 
   resumeDelete: (adminId, req, metadata = {}) => {
     logAdminActivity({ adminId, action: 'RESUME_DELETE', metadata, req });
+  },
+
+  languageCreate: (adminId, req, metadata = {}) => {
+    logAdminActivity({ adminId, action: 'LANGUAGE_CREATE', metadata, req });
+  },
+
+  languageUpdate: (adminId, req, metadata = {}) => {
+    logAdminActivity({ adminId, action: 'LANGUAGE_UPDATE', metadata, req });
+  },
+
+  languageDelete: (adminId, req, metadata = {}) => {
+    logAdminActivity({ adminId, action: 'LANGUAGE_DELETE', metadata, req });
   }
 };
 

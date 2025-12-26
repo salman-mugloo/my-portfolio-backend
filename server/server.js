@@ -17,6 +17,7 @@ import featureRoutes from './routes/featureRoutes.js';
 import contactInfoRoutes from './routes/contactInfoRoutes.js';
 import educationRoutes from './routes/educationRoutes.js';
 import activityRoutes from './routes/activityRoutes.js';
+import languageRoutes from './routes/languageRoutes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -112,6 +113,7 @@ app.use('/api/features', featureRoutes);
 app.use('/api/contact-info', contactInfoRoutes);
 app.use('/api/education', educationRoutes);
 app.use('/api/activity', activityRoutes);
+app.use('/api/languages', languageRoutes);
 
 
 // API root route
@@ -129,7 +131,8 @@ app.get('/api', (req, res) => {
       certifications: '/api/certifications',
       resume: '/api/resume',
       profile: '/api/profile',
-      contact: '/api/contact'
+      contact: '/api/contact',
+      languages: '/api/languages'
     }
   });
 });
@@ -151,7 +154,8 @@ app.get('/', (req, res) => {
       expertise: '/api/expertise',
       skills: '/api/skills',
       certifications: '/api/certifications',
-      resume: '/api/resume'
+      resume: '/api/resume',
+      languages: '/api/languages'
     }
   });
 });
