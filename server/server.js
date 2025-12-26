@@ -62,8 +62,8 @@ app.use(
     xContentTypeOptions: true,
     referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
     hidePoweredBy: true,
-    crossOriginResourcePolicy: isDevelopment ? { policy: 'cross-origin' } : { policy: 'same-origin' },
-    xFrameOptions: isDevelopment ? false : { action: 'deny' }
+    crossOriginResourcePolicy: { policy: 'cross-origin' }, // Allow cross-origin for images/PDFs
+    frameguard: { action: 'sameorigin' } // Allow same-origin iframe embedding for PDF previews
   })
 );
 
