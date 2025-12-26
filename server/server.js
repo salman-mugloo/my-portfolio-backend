@@ -82,18 +82,15 @@ app.use(
 // Middleware
 app.use(express.json());
 
-// Set CORS headers for static file requests
-app.use("/uploads", (req, res, next) => {
-  if (FRONTEND_URL) {
-    res.setHeader("Access-Control-Allow-Origin", FRONTEND_URL);
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-  }
-  next();
-});
-
 // Serve uploaded files (images + PDFs) from server/uploads/ directory
+// Explicitly allow cross-origin access to fix ORB blocking
 app.use(
   "/uploads",
+  (req, res, next) => {
+    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    next();
+  },
   express.static(path.join(__dirname, "uploads"))
 );
 
