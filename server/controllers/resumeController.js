@@ -62,7 +62,7 @@ export const uploadResume = async (req, res) => {
     }
 
     const resume = await Resume.create({
-      fileUrl: req.file.path,
+      fileUrl: `/uploads/resume/${path.basename(req.file.path)}`,
       title: title || 'Resume',
       isActive: true
     });

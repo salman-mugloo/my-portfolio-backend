@@ -49,8 +49,8 @@ export const createCertification = async (req, res) => {
     const certification = await Certification.create({
       title,
       issuer,
-      image: imageFile ? imageFile.path : null,
-      pdf: pdfFile ? pdfFile.path : null,
+      image: imageFile ? `/uploads/certificates/${path.basename(imageFile.path)}` : null,
+      pdf: pdfFile ? `/uploads/certificates/${path.basename(pdfFile.path)}` : null,
       order: order !== undefined ? parseInt(order) : 0,
       isActive: isActive !== undefined ? (isActive === 'true' || isActive === true) : true
     });
@@ -86,8 +86,8 @@ export const updateCertification = async (req, res) => {
 
     certification.title = title !== undefined ? title : certification.title;
     certification.issuer = issuer !== undefined ? issuer : certification.issuer;
-    certification.image = imageFile ? imageFile.path : certification.image;
-    certification.pdf = pdfFile ? pdfFile.path : certification.pdf;
+    certification.image = imageFile ? `/uploads/certificates/${path.basename(imageFile.path)}` : certification.image;
+    certification.pdf = pdfFile ? `/uploads/certificates/${path.basename(pdfFile.path)}` : certification.pdf;
     certification.order = order !== undefined ? parseInt(order) : certification.order;
     certification.isActive = isActive !== undefined ? (isActive === 'true' || isActive === true) : certification.isActive;
 
