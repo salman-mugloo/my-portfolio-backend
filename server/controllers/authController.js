@@ -85,6 +85,9 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
+    // TEMP: OTP disabled during deployment setup
+    // OTP code below is commented out but preserved for later re-enable
+    /*
     // Generate 6-digit OTP
     const otp = generateOTP();
     // Ensure OTP is a string before hashing
@@ -119,6 +122,19 @@ export const login = async (req, res) => {
       otpRequired: true,
       message: 'OTP sent to your email',
       email: admin.username // Return email for frontend
+    });
+    */
+
+    // TEMP: Direct login without OTP - generate JWT immediately
+    // Log login success
+    auditLogger.loginSuccess(admin._id, req, { username: admin.username });
+
+    // Generate JWT and return
+    const token = generateToken(admin._id);
+    res.json({
+      token,
+      username: admin.username,
+      message: 'Login successful'
     });
 
   } catch (error) {
